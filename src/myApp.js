@@ -24,6 +24,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+
 var Helloworld = cc.Layer.extend({
     isMouseDown:false,
     helloImg:null,
@@ -64,12 +65,13 @@ var Helloworld = cc.Layer.extend({
         // position the label on the center of the screen
         this.helloLabel.setPosition(size.width / 2, 0);
         // add the label as a child to this layer
-        this.addChild(this.helloLabel, 5);
+        //this.addChild(this.helloLabel, 5);
 
         var lazyLayer = cc.Layer.create();
         this.addChild(lazyLayer);
 
         // add "HelloWorld" splash screen"
+        /*
         this.sprite = cc.Sprite.create("res/HelloWorld.png");
         this.sprite.setPosition(size.width / 2, size.height / 2);
         this.sprite.setScale(0.5);
@@ -82,8 +84,33 @@ var Helloworld = cc.Layer.extend({
 
         this.sprite.runAction(cc.Sequence.create(rotateToA, scaleToA));
         this.helloLabel.runAction(cc.Spawn.create(cc.MoveBy.create(2.5, cc.p(0, size.height - 40)),cc.TintTo.create(2.5,255,125,0)));
-
+        */
         this.setTouchEnabled(true);
+        this.setKeyboardEnabled(true);
+        
+        
+        this._jetSprite = new JetSprite();
+        
+        this.setPosition(new cc.Point(0,0));
+        
+        //this.addChild(this._jetSprite);
+        //this._jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
+        this._jetSprite.scheduleUpdate();
+        this.schedule(this.update);
+        
+        
+        //var layer1 = cc.LayerColor.create(
+        //    new cc.Color4B(128, 128, 128, 255), 600, 600);
+        //var jetSprite = cc.Sprite.create("res/Jet.png");
+
+        //layer1.setPosition(new cc.Point(0.0,0.0));
+        //layer1.addChild(jetSprite);
+
+        //var size = cc.Director.getInstance().getWinSize();
+        //jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
+        //jetSprite.setScale(0.1);
+        //this.addChild(layer1);        
+        //lazyLayer.addChild(this._jetSprite);
         return true;
     },
     // a selector callback
@@ -97,16 +124,23 @@ var Helloworld = cc.Layer.extend({
         if (this.isMouseDown) {
             if (touches) {
                 //this.circle.setPosition(touches[0].getLocation().x, touches[0].getLocation().y);
+                //this._jetSprite.handleTouchMove(pTouch[0].getLocation());
             }
         }
     },
+    //for key
+    onKeyDown:function(e){
+       //handle sprit move
+    },
     onTouchesEnded:function (touches, event) {
         this.isMouseDown = false;
+        //this._jetSprite.handleTouch(pTouch[0].getLocation());
     },
     onTouchesCancelled:function (touches, event) {
         console.log("onTouchesCancelled");
     }
 });
+
 
 var HelloWorldScene = cc.Scene.extend({
     onEnter:function () {
