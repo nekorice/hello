@@ -65,7 +65,7 @@ var Helloworld = cc.Layer.extend({
         // position the label on the center of the screen
         this.helloLabel.setPosition(size.width / 2, 0);
         // add the label as a child to this layer
-        //this.addChild(this.helloLabel, 5);
+        this.addChild(this.helloLabel, 5);
 
         var lazyLayer = cc.Layer.create();
         this.addChild(lazyLayer);
@@ -91,17 +91,17 @@ var Helloworld = cc.Layer.extend({
         
         this._jetSprite = new JetSprite();
         
-        this.setPosition(new cc.Point(0,0));
+        //this.setPosition(new cc.Point(0,0));
         
         //this.addChild(this._jetSprite);
-        //this._jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
+        this._jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
         this._jetSprite.scheduleUpdate();
         this.schedule(this.update);
         
         
         //var layer1 = cc.LayerColor.create(
         //    new cc.Color4B(128, 128, 128, 255), 600, 600);
-        //var jetSprite = cc.Sprite.create("res/Jet.png");
+        //var jetSprite = cc.Sprite.create("res/jet.png");
 
         //layer1.setPosition(new cc.Point(0.0,0.0));
         //layer1.addChild(jetSprite);
@@ -110,7 +110,8 @@ var Helloworld = cc.Layer.extend({
         //jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
         //jetSprite.setScale(0.1);
         //this.addChild(layer1);        
-        //lazyLayer.addChild(this._jetSprite);
+        lazyLayer.addChild(this._jetSprite);
+        //lazyLayer.addChild(jetSprite)
         return true;
     },
     // a selector callback
@@ -124,17 +125,20 @@ var Helloworld = cc.Layer.extend({
         if (this.isMouseDown) {
             if (touches) {
                 //this.circle.setPosition(touches[0].getLocation().x, touches[0].getLocation().y);
-                //this._jetSprite.handleTouchMove(pTouch[0].getLocation());
+                this._jetSprite.handleTouchMove(touches[0].getLocation());
             }
         }
+    },
+    update:function(dt){
     },
     //for key
     onKeyDown:function(e){
        //handle sprit move
+        this._jetSprite.handleKey(e);
     },
     onTouchesEnded:function (touches, event) {
         this.isMouseDown = false;
-        //this._jetSprite.handleTouch(pTouch[0].getLocation());
+        //this._jetSprite.handleTouch(touches[0].getLocation());
     },
     onTouchesCancelled:function (touches, event) {
         console.log("onTouchesCancelled");

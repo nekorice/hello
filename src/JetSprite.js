@@ -1,9 +1,13 @@
 var JetSprite = cc.Sprite.extend({
     _currentRotation:0,
     ctor:function(){
+        //this is important
+        this._super();
+
         this.initWithFile("res/jet.png");
+        //this.create("res/HelloWorld.png");
     },
-    /*
+    
     update:function(dt){
         this.setRotation(this._currentRotation);
     },
@@ -22,6 +26,7 @@ var JetSprite = cc.Sprite.extend({
     },
     handleTouch:function(touchLocation)
     {
+        
         if(touchLocation.x < 300)
             this._currentRotation = 0;
         else
@@ -34,5 +39,5 @@ var JetSprite = cc.Sprite.extend({
         angle = angle * (180/Math.PI);
         this._currentRotation = angle;
 
-    }*/
+    }
 });
