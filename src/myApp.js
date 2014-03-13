@@ -30,7 +30,11 @@ var Helloworld = cc.Layer.extend({
     helloImg:null,
     helloLabel:null,
     circle:null,
+    walk_prefix:"data_character_yuyuko_walkFront0",
+    back_prefix:"data_character_yuyuko_walkBack0",
     sprite:null,
+    //start index
+    spriteFrameIndex:0,
 
     init:function () {
         //////////////////////////////
@@ -44,6 +48,8 @@ var Helloworld = cc.Layer.extend({
         var size = cc.Director.getInstance().getWinSize();
 
         // add a "close" icon to exit the progress. it's an autorelease object
+        
+        /*
         var closeItem = cc.MenuItemImage.create(
             "res/CloseNormal.png",
             "res/CloseSelected.png",
@@ -51,11 +57,11 @@ var Helloworld = cc.Layer.extend({
                 history.go(-1);
             },this);
         closeItem.setAnchorPoint(0.5, 0.5);
-
-        var menu = cc.Menu.create(closeItem);
-        menu.setPosition(0,0);
-        this.addChild(menu, 1);
-        closeItem.setPosition(size.width - 20, 20);
+        */
+        //var menu = cc.Menu.create(closeItem);
+        //menu.setPosition(0,0);
+        //this.addChild(menu, 1);
+        //closeItem.setPosition(size.width - 20, 20);
 
         /////////////////////////////
         // 3. add your codes below...
@@ -88,16 +94,26 @@ var Helloworld = cc.Layer.extend({
         this.setTouchEnabled(true);
         this.setKeyboardEnabled(true);
         
-        
-        this._jetSprite = new JetSprite();
+
+        var cache = cc.SpriteFrameCache.getInstance();
+        cache.addSpriteFrames(s_Walk_plist, s_Walk);
+
+        this.sprite = cc.Sprite.createWithSpriteFrameName(this.walk_prefix + "00.png");
+        this.sprite.setPosition(new cc.Point(300,300));
+        this.sprite.setScale(1);
+        this.addChild(this.sprite);        
+
+       
+        //this._jetSprite = new JetSprite();
         
         //this.setPosition(new cc.Point(0,0));
         
         //this.addChild(this._jetSprite);
+        /*
         this._jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
         this._jetSprite.scheduleUpdate();
         this.schedule(this.update);
-        
+        */
         
         //var layer1 = cc.LayerColor.create(
         //    new cc.Color4B(128, 128, 128, 255), 600, 600);
@@ -110,7 +126,7 @@ var Helloworld = cc.Layer.extend({
         //jetSprite.setPosition(new cc.Point(size.width/2,size.height/2));
         //jetSprite.setScale(0.1);
         //this.addChild(layer1);        
-        lazyLayer.addChild(this._jetSprite);
+        //lazyLayer.addChild(this._jetSprite);
         //lazyLayer.addChild(jetSprite)
         return true;
     },
@@ -125,7 +141,7 @@ var Helloworld = cc.Layer.extend({
         if (this.isMouseDown) {
             if (touches) {
                 //this.circle.setPosition(touches[0].getLocation().x, touches[0].getLocation().y);
-                this._jetSprite.handleTouchMove(touches[0].getLocation());
+                //this._jetSprite.handleTouchMove(touches[0].getLocation());
             }
         }
     },
@@ -134,7 +150,37 @@ var Helloworld = cc.Layer.extend({
     //for key
     onKeyDown:function(e){
        //handle sprit move
-        this._jetSprite.handleKey(e);
+       // this._jetSprite.handleKey(e);
+       if(e == cc.KEY.left || e == cc.KEY.right){
+            
+            var prevPrefix = this.spriteFrameNamePrefix;
+            if(e == cc.KEY.left)
+                this.spriteFrameNamePrefix = this.back_prefix;
+            else
+                this.spriteFrameNamePrefix = this.walk_prefix;
+            if(prevPrefix !== this.spriteFrameNamePrefix)
+                this.spriteFrameIndex = 0;
+            
+
+            if(this.spriteFrameIndex > 5)
+                this.spriteFrameIndex = 0;
+            var indexAsString;
+            if(this.spriteFrameIndex < 10)
+                indexAsString = "0" + this.spriteFrameIndex.toString();
+            else
+                indexAsString = this.spriteFrameIndex.toString();
+
+            this.removeChild(this.sprite);
+            this.sprite  = cc.Sprite.createWithSpriteFrameName(
+                this.spriteFrameNamePrefix + indexAsString + ".png"
+            );
+
+            this.sprite.setPosition(new cc.Point(300,300));
+            this.sprite.setScale(1);
+            this.addChild(this.sprite);
+            this.spriteFrameIndex++;
+        }
+
     },
     onTouchesEnded:function (touches, event) {
         this.isMouseDown = false;
