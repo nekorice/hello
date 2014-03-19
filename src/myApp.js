@@ -71,10 +71,11 @@ var Helloworld = cc.Layer.extend({
         // position the label on the center of the screen
         this.helloLabel.setPosition(size.width / 2, 0);
         // add the label as a child to this layer
-        this.addChild(this.helloLabel, 5);
-
-        var lazyLayer = cc.Layer.create();
-        this.addChild(lazyLayer);
+        //this.addChild(this.helloLabel, 5);
+        
+        //静态的不经常更新的层
+        //var lazyLayer = cc.Layer.create();
+        //this.addChild(lazyLayer);
 
         // add "HelloWorld" splash screen"
         /*
@@ -93,16 +94,36 @@ var Helloworld = cc.Layer.extend({
         */
         this.setTouchEnabled(true);
         this.setKeyboardEnabled(true);
-        
 
+        this.sprite = new player_uuz()
+        this.addChild(this.sprite)
+        
+        this.scheduleUpdate();
+        this.schedule(this.update);
+        /* 
         var cache = cc.SpriteFrameCache.getInstance();
         cache.addSpriteFrames(s_Walk_plist, s_Walk);
 
         this.sprite = cc.Sprite.createWithSpriteFrameName(this.walk_prefix + "00.png");
         this.sprite.setPosition(new cc.Point(300,300));
         this.sprite.setScale(1);
-        this.addChild(this.sprite);        
+        this.addChild(this.sprite, 2, 0);        
 
+
+        //tiled map test
+        var tileMap = cc.TMXTiledMap.create(s_tmx);
+        this._tileMap = tileMap;
+        this.addChild(this._tileMap, 1, 0);
+        // 获得对象层
+        /*
+        var objectLayer = tileMap.getObjectGroup("Objects");
+        var array = objectLayer.getObjects();
+        var spawnPoint = array[0];
+        var objX = spawnPoint["x"];
+        var objY = spawnPoint["y"];
+        var width = spawnPoint["width"];
+        var height = spawnPoint["height"]; 
+        */
        
         //this._jetSprite = new JetSprite();
         
@@ -146,11 +167,17 @@ var Helloworld = cc.Layer.extend({
         }
     },
     update:function(dt){
+        //sprite.update
+        //设定每一帧
+        this.sprite.update(dt);
+
     },
     //for key
     onKeyDown:function(e){
        //handle sprit move
-       // this._jetSprite.handleKey(e);
+       this.sprite.handleKey(e);
+       g_var.KEYS[e] = true;
+       /*
        if(e == cc.KEY.left || e == cc.KEY.right){
             
             var prevPrefix = this.spriteFrameNamePrefix;
@@ -177,14 +204,18 @@ var Helloworld = cc.Layer.extend({
 
             this.sprite.setPosition(new cc.Point(300,300));
             this.sprite.setScale(1);
-            this.addChild(this.sprite);
+            this.addChild(this.sprite, 2, 0);
             this.spriteFrameIndex++;
         }
-
+        */
     },
+    onKeyUp:function (e) {
+         g_var.KEYS[e] = false;
+    },    
     onTouchesEnded:function (touches, event) {
         this.isMouseDown = false;
         //this._jetSprite.handleTouch(touches[0].getLocation());
+
     },
     onTouchesCancelled:function (touches, event) {
         console.log("onTouchesCancelled");
@@ -196,8 +227,9 @@ var HelloWorldScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
         var layer = new Helloworld();
-        layer.init();
+        
         this.addChild(layer);
+        layer.init();
     }
 });
 

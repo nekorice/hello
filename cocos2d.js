@@ -40,7 +40,7 @@
         appFiles:[
             'src/resource.js',
             'src/JetSprite.js',
-            //'scr/Ship.js',
+            'src/uuz.js',
             'src/myApp.js'//add your own files in order here
             
         ]
