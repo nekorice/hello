@@ -95,8 +95,14 @@ var Helloworld = cc.Layer.extend({
         this.setTouchEnabled(true);
         this.setKeyboardEnabled(true);
 
-        this.sprite = new player_uuz()
-        this.addChild(this.sprite)
+        //tiled map test
+        var tileMap = cc.TMXTiledMap.create(s_tmx);
+        this._tileMap = tileMap;
+        //this.addChild(this._tileMap, 1, 0);
+
+        this.sprite = new player_uuz();
+        this.sprite._tmx = this._tileMap;
+        this.addChild(this.sprite, this.sprite.zOrder);
         
         this.scheduleUpdate();
         this.schedule(this.update);
@@ -108,12 +114,9 @@ var Helloworld = cc.Layer.extend({
         this.sprite.setPosition(new cc.Point(300,300));
         this.sprite.setScale(1);
         this.addChild(this.sprite, 2, 0);        
+        */
 
 
-        //tiled map test
-        var tileMap = cc.TMXTiledMap.create(s_tmx);
-        this._tileMap = tileMap;
-        this.addChild(this._tileMap, 1, 0);
         // 获得对象层
         /*
         var objectLayer = tileMap.getObjectGroup("Objects");

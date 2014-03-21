@@ -18,7 +18,9 @@ var res = {
 
 var g_var = {
   'player_zorder':2,
-  'KEYS' : []
+  'KEYS' : [],
+  'horizon':300,
+  'gravity':50,
 }
 
 //这里在preload使用用来提前载入资源
